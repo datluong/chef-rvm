@@ -42,7 +42,11 @@ action :create do
   end
 
   Chef::Log.info("Setting default ruby to rvm_ruby[#{@ruby_string}]")
-  @rvm_env.rvm :use, @ruby_string, :default => true
+
+  options = {:default => true}
+  options.merge! new_resource.options if new_resource.options
+
+  @rvm_env.rvm :use, @ruby_string, options
   new_resource.updated_by_last_action(true)
 end
 
